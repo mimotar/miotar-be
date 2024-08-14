@@ -7,6 +7,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ServicesModule } from './services/services.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ServicesModule } from './services/services.module';
     }),
     ServicesModule,
     AuthModule,
+    AccountModule,
   ],
   controllers: [AppController],
   providers: [

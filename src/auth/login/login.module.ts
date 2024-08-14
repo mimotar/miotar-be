@@ -4,7 +4,12 @@ import { LoginController } from './login.controller';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [JwtModule],
+  imports: [
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+    }),
+  ],
   controllers: [LoginController],
   providers: [LoginService],
 })

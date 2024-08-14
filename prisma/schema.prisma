@@ -18,7 +18,7 @@ model User {
   email               String                @unique
   name                String?
   profile             Profile?
-  password            String
+  password            String                @db.Text()
   personalAccessToken PersonalAccessToken[]
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt()
