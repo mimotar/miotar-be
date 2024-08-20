@@ -30,4 +30,4 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           port: 22
           password: ${{ secrets.SSH_PASSWORD }}
-          script: cd ${{ secrets.SSH_PATH }} && ./.scripts/deploy.sh
+          script: cd ${{ secrets.DEPLOY_PATH }} && ./.scripts/deploy.sh
