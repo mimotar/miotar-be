@@ -1,0 +1,41 @@
+name: "Deploying app to staging"
+on:
+
+  push:
+    branches:
+      - staging
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22.6.0'
+    
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Run Prisma Generate 
+        run: npx prisma generate
+
+    - name: Run Migration
+        run: npx prisma migrate deploy
+  
+  - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: cd ${{ secrets.SSH_PATH }} && ./.scripts/deploy.sh
