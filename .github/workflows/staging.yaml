@@ -24,12 +24,6 @@ jobs:
 
     - name: Build the project
       run: npm run build
-
-    - name: Run Prisma Generate 
-        run: npx prisma generate
-
-    - name: Run Migration
-        run: npx prisma migrate deploy
   
   - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -37,5 +31,5 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           port: 22
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           # script: cd ${{ secrets.SSH_PATH }} && ./.scripts/deploy.sh
