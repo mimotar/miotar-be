@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { MailerService } from 'src/services/mailer/mailer.service';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { VerifyAccountDto } from './dto/verify-account.dto';
-import { AccountStatus } from '@prisma/client';
+import { AccountStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class VerificationService {
@@ -41,7 +41,7 @@ export class VerificationService {
         profile: {
           update: {
             data: {
-              status: AccountStatus.ACTIVE,
+              status: AccountStatusEnum.ACTIVE,
               emailVerifyAt: new Date(),
             },
           },
@@ -74,7 +74,7 @@ export class VerificationService {
     if (user.profile.status && user.profile.emailVerifyAt) {
       return { message: 'Account already verified' };
     }
-    await this.mailerService.sendVerificationEmail(user.email, user);
+    await this.mailerService.sendVerificationMail(user.email, user);
     return {
       message: 'Verification email sent successfully',
     };

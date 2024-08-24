@@ -7,7 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../../services/prisma/prisma.service';
 import { Request } from 'express';
-import { AccountStatus } from '@prisma/client';
+import { AccountStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class VerificationGuard implements CanActivate {
@@ -45,7 +45,7 @@ export class VerificationGuard implements CanActivate {
 
       if (
         !personalAccessToken.user.profile.emailVerifyAt ||
-        personalAccessToken.user.profile.status === AccountStatus.PENDING
+        personalAccessToken.user.profile.status === AccountStatusEnum.PENDING
       ) {
         throw new Error();
       }

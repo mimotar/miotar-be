@@ -80,7 +80,7 @@ export class RegisterService {
         },
       });
 
-      await this.mailerService.sendVerificationEmail(user.email, user);
+      await this.mailerService.sendVerificationMail(user.email, user);
 
       // remove password and verification code from the returned data
       const {

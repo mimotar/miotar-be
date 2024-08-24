@@ -29,15 +29,15 @@ model User {
 }
 
 model Profile {
-  id               Int           @id @default(autoincrement())
-  userId           Int           @unique
-  role             UserRole      @default(USER)
-  user             User          @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-  verificationCode String        @unique
-  status           AccountStatus @default(PENDING)
+  id               Int               @id @default(autoincrement())
+  userId           Int               @unique
+  role             UserRoleEnum      @default(USER)
+  user             User              @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  verificationCode String            @unique
+  status           AccountStatusEnum @default(PENDING)
   emailVerifyAt    DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt()
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt()
 
   @@map("profiles")
 }
@@ -54,14 +54,30 @@ model PersonalAccessToken {
   @@map("personal_access_tokens")
 }
 
-enum UserRole {
+model PasswordResetToken {
+  id        Int                          @id @default(autoincrement())
+  email     String
+  token     String                       @unique
+  status    PasswordResetTokenStatusEnum @default(ACTIVE)
+  expireAt  DateTime
+  createdAt DateTime                     @default(now())
+
+  @@map("password_reset_tokens")
+}
+
+enum UserRoleEnum {
   USER
   ADMIN
 }
 
-enum AccountStatus {
+enum AccountStatusEnum {
   PENDING
   ACTIVE
   SUSPENDED
   DELETED
+}
+
+enum PasswordResetTokenStatusEnum {
+  ACTIVE
+  INACTIVE
 }
