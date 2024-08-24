@@ -10,8 +10,15 @@ export class AccountService {
       where: {
         id: userId,
       },
+      omit: {
+        password: true,
+      },
       include: {
-        profile: true,
+        profile: {
+          omit: {
+            verificationCode: true,
+          },
+        },
       },
     });
 

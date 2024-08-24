@@ -17,9 +17,13 @@ export class LoginService {
         where: {
           email: createLoginDto.email,
         },
+
         include: {
           profile: {
             include: {},
+            omit: {
+              verificationCode: true,
+            },
           },
         },
       });
@@ -47,7 +51,10 @@ export class LoginService {
           },
         },
       });
-      return { user, access_token };
+
+      // remove password from the returned data
+      const { password, ...userData } = user;
+      return { user: userData, access_token };
     } catch (error) {
       throw new BadRequestException({
         message: 'Email or password is incorrect',
