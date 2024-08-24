@@ -26,11 +26,42 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Api Documentation
+
+[Mimotar](https://documenter.getpostman.com/view/37681917/2sA3s6GA9u) documentation.
+
 ## Installation
 
-```bash
-$ npm install
-```
+1. **Install Dependencies**
+
+   ```bash
+   $ npm install
+   ```
+
+2. **Setup Environment Variables**
+
+   Copy the example environment file:
+
+   ```bash
+   $ cp .env.example .env
+   ```
+
+   Open the `.env` file and update the following values:
+
+   - **`DATABASE_URL`**: Set this to your MySQL database URL.
+   - **`JWT_SECRET`**: Generate a secure hash token and set it here.
+
+3. **Generate Prisma Client**
+
+   ```bash
+   $ npx prisma generate
+   ```
+
+4. **Deploy Prisma Migrations**
+
+   ```bash
+   $ npx prisma migrate deploy
+   ```
 
 ## Running the app
 
