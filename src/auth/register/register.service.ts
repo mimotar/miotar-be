@@ -8,15 +8,19 @@ import { CreateRegisterDto } from './dto/create-register.dto';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { MailerService } from 'src/services/mailer/mailer.service';
+import { CodeGeneratorService } from 'src/services/code-generator/code-generator.service';
 
 @Injectable()
 export class RegisterService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private mailerService: MailerService,
+    private readonly codeGeneratorService: CodeGeneratorService,
   ) {}
 
-  async create(createRegisterDto: CreateRegisterDto) {
+  async create(createRegisterDto: CreateRegisterDto): Promise<object> {
     if (
       createRegisterDto.password !== createRegisterDto.password_confirmation
     ) {
@@ -39,13 +43,18 @@ export class RegisterService {
         createRegisterDto.password,
         salt,
       );
+      const generatedVerificationCode =
+        await this.codeGeneratorService.generateUniqueCode(6);
+
       const user = await this.prisma.user.create({
         data: {
           name: createRegisterDto.name,
           email: createRegisterDto.email,
           password: hashedPassword,
           profile: {
-            create: {},
+            create: {
+              verificationCode: generatedVerificationCode,
+            },
           },
         },
         include: {
@@ -70,9 +79,17 @@ export class RegisterService {
           },
         },
       });
-      return { user, access_token };
+
+      await this.mailerService.sendVerificationEmail(user.email, user);
+
+      // remove password and verification code from the returned data
+      const {
+        password,
+        profile: { verificationCode, ...profileData },
+        ...userData
+      } = user;
+      return { user: { ...userData, profile: profileData }, access_token };
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException('Something went wrong');
     }
   }

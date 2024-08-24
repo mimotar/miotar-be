@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { RegisterController } from './register.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { MailerService } from 'src/services/mailer/mailer.service';
+import { CodeGeneratorService } from 'src/services/code-generator/code-generator.service';
 
 @Module({
   imports: [
@@ -12,6 +14,6 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [RegisterController],
-  providers: [RegisterService],
+  providers: [RegisterService, MailerService, CodeGeneratorService],
 })
 export class RegisterModule {}

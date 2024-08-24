@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -22,18 +23,21 @@ model User {
   personalAccessToken PersonalAccessToken[]
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt()
+  deletedAt           DateTime?
 
   @@map("users")
 }
 
 model Profile {
-  id     Int      @id @default(autoincrement())
-  userId Int      @unique
-  role   UserRole @default(USER)
-  user   User     @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  id               Int           @id @default(autoincrement())
+  userId           Int           @unique
+  role             UserRole      @default(USER)
+  user             User          @relation(fields: [userId], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  verificationCode String        @unique
+  status           AccountStatus @default(PENDING)
+  emailVerifyAt    DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt()
 
   @@map("profiles")
 }
@@ -53,4 +57,11 @@ model PersonalAccessToken {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DELETED
 }
