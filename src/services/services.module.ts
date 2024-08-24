@@ -9,6 +9,11 @@ import { CodeGeneratorService } from './code-generator/code-generator.service';
 
 @Module({
   imports: [PrismaModule, LoggerModule, MailerModule],
-  providers: [PrismaService, LoggerService, MailerService, CodeGeneratorService],
+  providers: [
+    PrismaService,
+    LoggerService,
+    MailerService,
+    CodeGeneratorService,
+  ],
 })
 export class ServicesModule {}
