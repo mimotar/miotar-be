@@ -14,7 +14,7 @@ export class VerificationService {
     userId: number,
     verifyAccountDto: VerifyAccountDto,
   ): Promise<object> {
-    let userResult = await this.prismaService.user.findUniqueOrThrow({
+    const userResult = await this.prismaService.user.findUniqueOrThrow({
       where: {
         id: userId,
       },
