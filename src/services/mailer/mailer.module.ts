@@ -19,6 +19,7 @@ import { MailerService } from './mailer.service';
       },
       defaults: {
         from: process.env.MAILER_FROM_ADDRESS,
+        sender: process.env.MAILER_FROM_NAME,
       },
       template: {
         dir: process.cwd() + '/src/mails',
